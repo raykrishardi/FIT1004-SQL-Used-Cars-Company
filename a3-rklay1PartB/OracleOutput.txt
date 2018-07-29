@@ -1,0 +1,660 @@
+SQL> DROP TABLE branch CASCADE CONSTRAINTS ;
+
+Table BRANCH dropped.
+
+SQL> DROP TABLE certificate CASCADE CONSTRAINTS ;
+
+Table CERTIFICATE dropped.
+
+SQL> DROP TABLE customer CASCADE CONSTRAINTS ;
+
+Table CUSTOMER dropped.
+
+SQL> DROP TABLE department CASCADE CONSTRAINTS ;
+
+Table DEPARTMENT dropped.
+
+SQL> DROP TABLE employee CASCADE CONSTRAINTS ;
+
+Table EMPLOYEE dropped.
+
+SQL> DROP TABLE employee_certificate CASCADE CONSTRAINTS ;
+
+Table EMPLOYEE_CERTIFICATE dropped.
+
+SQL> DROP TABLE employee_qualification CASCADE CONSTRAINTS ;
+
+Table EMPLOYEE_QUALIFICATION dropped.
+
+SQL> DROP TABLE manufacturer CASCADE CONSTRAINTS ;
+
+Table MANUFACTURER dropped.
+
+SQL> DROP TABLE model CASCADE CONSTRAINTS ;
+
+Table MODEL dropped.
+
+SQL> DROP TABLE parts CASCADE CONSTRAINTS ;
+
+Table PARTS dropped.
+
+SQL> DROP TABLE payment CASCADE CONSTRAINTS ;
+
+Table PAYMENT dropped.
+
+SQL> DROP TABLE previousOwner CASCADE CONSTRAINTS ;
+
+Table PREVIOUSOWNER dropped.
+
+SQL> DROP TABLE qualification CASCADE CONSTRAINTS ;
+
+Table QUALIFICATION dropped.
+
+SQL> DROP TABLE sales CASCADE CONSTRAINTS ;
+
+Table SALES dropped.
+
+SQL> DROP TABLE sales_payment CASCADE CONSTRAINTS ;
+
+Table SALES_PAYMENT dropped.
+
+SQL> DROP TABLE sales_vehicle CASCADE CONSTRAINTS ;
+
+Table SALES_VEHICLE dropped.
+
+SQL> DROP TABLE secondhand_vehicle CASCADE CONSTRAINTS ;
+
+Table SECONDHAND_VEHICLE dropped.
+
+SQL> DROP TABLE supplier CASCADE CONSTRAINTS ;
+
+Table SUPPLIER dropped.
+
+SQL> DROP TABLE supplier_manufacturer CASCADE CONSTRAINTS ;
+
+Error starting at line : 45 in command -
+DROP TABLE supplier_manufacturer CASCADE CONSTRAINTS 
+Error report -
+SQL Error: ORA-00942: table or view does not exist
+00942. 00000 -  "table or view does not exist"
+*Cause:    
+*Action:
+SQL> DROP TABLE testDrive CASCADE CONSTRAINTS ;
+
+Error starting at line : 47 in command -
+DROP TABLE testDrive CASCADE CONSTRAINTS 
+Error report -
+SQL Error: ORA-00942: table or view does not exist
+00942. 00000 -  "table or view does not exist"
+*Cause:    
+*Action:
+SQL> DROP TABLE valuation CASCADE CONSTRAINTS ;
+
+Error starting at line : 49 in command -
+DROP TABLE valuation CASCADE CONSTRAINTS 
+Error report -
+SQL Error: ORA-00942: table or view does not exist
+00942. 00000 -  "table or view does not exist"
+*Cause:    
+*Action:
+SQL> DROP TABLE valuation_parts CASCADE CONSTRAINTS ;
+
+Error starting at line : 51 in command -
+DROP TABLE valuation_parts CASCADE CONSTRAINTS 
+Error report -
+SQL Error: ORA-00942: table or view does not exist
+00942. 00000 -  "table or view does not exist"
+*Cause:    
+*Action:
+SQL> DROP TABLE vehicle CASCADE CONSTRAINTS ;
+
+Error starting at line : 53 in command -
+DROP TABLE vehicle CASCADE CONSTRAINTS 
+Error report -
+SQL Error: ORA-00942: table or view does not exist
+00942. 00000 -  "table or view does not exist"
+*Cause:    
+*Action:
+SQL> CREATE TABLE branch
+  (
+    branchID     NUMBER (8) NOT NULL ,
+    employeeID   CHAR (6) NOT NULL ,
+    location     VARCHAR2 (15) NOT NULL ,
+    address      VARCHAR2 (50) NOT NULL ,
+    phone        NUMBER (10) NOT NULL ,
+    tradingHours DATE NOT NULL ,
+    description  VARCHAR2 (50)
+  ) ;
+
+Table BRANCH created.
+
+SQL> CREATE UNIQUE INDEX branch__IDX ON branch
+  (
+    employeeID ASC
+  )
+  ;
+
+Unique index BRANCH__IDX created.
+
+SQL> ALTER TABLE branch ADD CONSTRAINT branch_PK PRIMARY KEY ( branchID ) ;
+
+Table BRANCH altered.
+
+SQL> CREATE TABLE certificate
+  (
+    certificateID          NUMBER (8) NOT NULL ,
+    certificateDescription VARCHAR2 (30) NOT NULL ,
+    dateAchieved           DATE NOT NULL
+  ) ;
+
+Table CERTIFICATE created.
+
+SQL> ALTER TABLE certificate ADD CONSTRAINT certificate_PK PRIMARY KEY ( certificateID ) ;
+
+Table CERTIFICATE altered.
+
+SQL> CREATE TABLE customer
+  (
+    customerNumber           CHAR (7) NOT NULL ,
+    title                    CHAR (5) NOT NULL ,
+    customerFirstName        VARCHAR2 (20) NOT NULL ,
+    customerLastName         VARCHAR2 (20) NOT NULL ,
+    customerAddress          VARCHAR2 (50) NOT NULL ,
+    customerEmailAddress     VARCHAR2 (50) NOT NULL ,
+    customerMobileNumber     NUMBER (10) NOT NULL ,
+    licenseNumber            VARCHAR2 (15) NOT NULL ,
+    numberOfVehiclePurchased NUMBER (3) NOT NULL
+  ) ;
+
+Table CUSTOMER created.
+
+SQL> ALTER TABLE customer ADD CONSTRAINT customer_PK PRIMARY KEY ( customerNumber ) ;
+
+Table CUSTOMER altered.
+
+SQL> CREATE TABLE department
+  (
+    departmentID       NUMBER (8) NOT NULL ,
+    branchID           NUMBER (8) NOT NULL ,
+    departmentName     VARCHAR2 (25) NOT NULL ,
+    departmentPhone    NUMBER (10) NOT NULL ,
+    departmentType     VARCHAR2 (20) NOT NULL ,
+    departmentPostcode VARCHAR2 (10)
+  ) ;
+
+Table DEPARTMENT created.
+
+SQL> ALTER TABLE department ADD CONSTRAINT department_PK PRIMARY KEY ( departmentID ) ;
+
+Table DEPARTMENT altered.
+
+SQL> CREATE TABLE employee
+  (
+    employeeID           CHAR (6) NOT NULL ,
+    departmentID         NUMBER (8) NOT NULL ,
+    branchID             NUMBER (8) NOT NULL ,
+    employeeFirstName    VARCHAR2 (20) NOT NULL ,
+    employeeLastName     VARCHAR2 (20) NOT NULL ,
+    employeePosition     VARCHAR2 (20) NOT NULL ,
+    employeeSalary       NUMBER (10) NOT NULL ,
+    employeeAddress      VARCHAR2 (50) NOT NULL ,
+    employeeMobileNumber NUMBER (10) NOT NULL ,
+    workLoad             CHAR (10) NOT NULL
+  ) ;
+
+Table EMPLOYEE created.
+
+SQL> CREATE UNIQUE INDEX employee__IDX ON employee
+  (
+    branchID ASC
+  )
+  ;
+
+Unique index EMPLOYEE__IDX created.
+
+SQL> ALTER TABLE employee ADD CONSTRAINT employee_PK PRIMARY KEY ( employeeID ) ;
+
+Table EMPLOYEE altered.
+
+SQL> CREATE TABLE employee_certificate
+  (
+    certificateID NUMBER (8) NOT NULL ,
+    employeeID    CHAR (6) NOT NULL
+  ) ;
+
+Table EMPLOYEE_CERTIFICATE created.
+
+SQL> ALTER TABLE employee_certificate ADD CONSTRAINT employee_certificate_PK PRIMARY KEY ( certificateID, employeeID ) ;
+
+Table EMPLOYEE_CERTIFICATE altered.
+
+SQL> CREATE TABLE employee_qualification
+  (
+    qualificationID NUMBER (8) NOT NULL ,
+    employeeID      CHAR (6) NOT NULL
+  ) ;
+
+Table EMPLOYEE_QUALIFICATION created.
+
+SQL> ALTER TABLE employee_qualification ADD CONSTRAINT employee_qualification_PK PRIMARY KEY ( qualificationID, employeeID ) ;
+
+Table EMPLOYEE_QUALIFICATION altered.
+
+SQL> CREATE TABLE manufacturer
+  (
+    manufacturerID   NUMBER (8) NOT NULL ,
+    manufacturerName VARCHAR2 (20) NOT NULL
+  ) ;
+
+Table MANUFACTURER created.
+
+SQL> ALTER TABLE manufacturer ADD CONSTRAINT manufacturer_PK PRIMARY KEY ( manufacturerID ) ;
+
+Table MANUFACTURER altered.
+
+SQL> CREATE TABLE model
+  (
+    modelID          NUMBER (8) NOT NULL ,
+    manufacturerID   NUMBER (8) NOT NULL ,
+    colour           VARCHAR2 (15) NOT NULL ,
+    engineSize       VARCHAR2 (15) NOT NULL ,
+    engineType       VARCHAR2 (15) NOT NULL ,
+    stereoType       VARCHAR2 (15) NOT NULL ,
+    airconditioning  VARCHAR2 (15) NOT NULL ,
+    powerSteering    VARCHAR2 (15) ,
+    transmissionType VARCHAR2 (10) NOT NULL
+  ) ;
+
+Table MODEL created.
+
+SQL> ALTER TABLE model ADD CONSTRAINT model_PK PRIMARY KEY ( modelID ) ;
+
+Table MODEL altered.
+
+SQL> CREATE TABLE parts
+  (
+    partsID    NUMBER (8) NOT NULL ,
+    supplierID NUMBER (8) NOT NULL ,
+    partName   VARCHAR2 (20) NOT NULL
+  ) ;
+
+Table PARTS created.
+
+SQL> ALTER TABLE parts ADD CONSTRAINT parts_PK PRIMARY KEY ( partsID ) ;
+
+Table PARTS altered.
+
+SQL> CREATE TABLE payment
+  (
+    paymentID     CHAR (9) NOT NULL ,
+    salesNumber   NUMBER (8) NOT NULL ,
+    paymentDate   DATE NOT NULL ,
+    paymentTime   DATE NOT NULL ,
+    paymentAmount NUMBER (10) NOT NULL ,
+    paymentType   VARCHAR2 (10) NOT NULL
+  ) ;
+
+Table PAYMENT created.
+
+SQL> CREATE UNIQUE INDEX payment__IDX ON payment
+  (
+    salesNumber ASC
+  )
+  ;
+
+Unique index PAYMENT__IDX created.
+
+SQL> ALTER TABLE payment ADD CONSTRAINT payment_PK PRIMARY KEY ( paymentID ) ;
+
+Table PAYMENT altered.
+
+SQL> CREATE TABLE previousOwner
+  (
+    previousOwnerID   NUMBER (8) NOT NULL ,
+    title             CHAR (5) NOT NULL ,
+    ownerFirstName    VARCHAR2 (20) NOT NULL ,
+    ownerLastName     VARCHAR2 (20) NOT NULL ,
+    ownerAddress      VARCHAR2 (50) NOT NULL ,
+    ownerMobileNumber NUMBER (10) NOT NULL ,
+    licenseNumber     VARCHAR2 (15) NOT NULL
+  ) ;
+
+Table PREVIOUSOWNER created.
+
+SQL> ALTER TABLE previousOwner ADD CONSTRAINT number_of_previous_owner_PK PRIMARY KEY ( previousOwnerID ) ;
+
+Table PREVIOUSOWNER altered.
+
+SQL> CREATE TABLE qualification
+  (
+    qualificationID          NUMBER (8) NOT NULL ,
+    qualificationDescription VARCHAR2 (30) NOT NULL ,
+    dateAchieved             DATE NOT NULL
+  ) ;
+
+Table QUALIFICATION created.
+
+SQL> ALTER TABLE qualification ADD CONSTRAINT qualification_PK PRIMARY KEY ( qualificationID ) ;
+
+Table QUALIFICATION altered.
+
+SQL> CREATE TABLE sales
+  (
+    salesNumber    NUMBER (8) NOT NULL ,
+    salesDate      DATE NOT NULL ,
+    salesTime      DATE NOT NULL ,
+    employeeID     CHAR (6) NOT NULL ,
+    commission     NUMBER (6) ,
+    salesAmount    NUMBER (10) NOT NULL ,
+    amountDue      NUMBER (10) NOT NULL ,
+    customerNumber CHAR (7) NOT NULL
+  ) ;
+
+Table SALES created.
+
+SQL> ALTER TABLE sales ADD CONSTRAINT sales_PK PRIMARY KEY ( salesNumber ) ;
+
+Table SALES altered.
+
+SQL> CREATE TABLE sales_payment
+  (
+    salesNumber NUMBER (8) NOT NULL ,
+    paymentID   CHAR (9) NOT NULL
+  ) ;
+
+Table SALES_PAYMENT created.
+
+SQL> CREATE UNIQUE INDEX sales_payment__IDX ON sales_payment
+  (
+    paymentID ASC
+  )
+  ;
+
+Unique index SALES_PAYMENT__IDX created.
+
+SQL> ALTER TABLE sales_payment ADD CONSTRAINT sales_payment_PK PRIMARY KEY ( salesNumber ) ;
+
+Table SALES_PAYMENT altered.
+
+SQL> CREATE TABLE sales_vehicle
+  (
+    salesNumber NUMBER (8) NOT NULL ,
+    regNumber   CHAR (6) NOT NULL
+  ) ;
+
+Table SALES_VEHICLE created.
+
+SQL> ALTER TABLE sales_vehicle ADD CONSTRAINT sales_vehicle_PK PRIMARY KEY ( salesNumber, regNumber ) ;
+
+Table SALES_VEHICLE altered.
+
+SQL> CREATE TABLE secondhand_vehicle
+  (
+    secondhand_vehicleID     NUMBER (8) NOT NULL ,
+    regNumber                CHAR (6) NOT NULL ,
+    modelID                  NUMBER (8) NOT NULL ,
+    dateAcquired             DATE NOT NULL ,
+    previousOwnerID          NUMBER (8) NOT NULL ,
+    odometerDistance         VARCHAR2 (6) NOT NULL ,
+    engineNumber             NUMBER (8) NOT NULL ,
+    bodyIdentificationNumber NUMBER (8) NOT NULL ,
+    amountPaid               NUMBER (10) NOT NULL
+  ) ;
+
+Table SECONDHAND_VEHICLE created.
+
+SQL> ALTER TABLE secondhand_vehicle ADD CONSTRAINT secondhand_vehicle_PK PRIMARY KEY ( secondhand_vehicleID ) ;
+
+Table SECONDHAND_VEHICLE altered.
+
+SQL> CREATE TABLE supplier
+  (
+    supplierID   NUMBER (8) NOT NULL ,
+    supplierName VARCHAR2 (20) NOT NULL
+  ) ;
+
+Table SUPPLIER created.
+
+SQL> ALTER TABLE supplier ADD CONSTRAINT supplier_PK PRIMARY KEY ( supplierID ) ;
+
+Table SUPPLIER altered.
+
+SQL> CREATE TABLE supplier_manufacturer
+  (
+    supplierID     NUMBER (8) NOT NULL ,
+    manufacturerID NUMBER (8) NOT NULL
+  ) ;
+
+Table SUPPLIER_MANUFACTURER created.
+
+SQL> ALTER TABLE supplier_manufacturer ADD CONSTRAINT supplier_manufacturer_PK PRIMARY KEY ( supplierID, manufacturerID ) ;
+
+Table SUPPLIER_MANUFACTURER altered.
+
+SQL> CREATE TABLE testDrive
+  (
+    testDriveID       NUMBER (8) NOT NULL ,
+    regNumber         CHAR (6) NOT NULL ,
+    customerNumber    CHAR (7) NOT NULL ,
+    customerFirstName VARCHAR2 (20) NOT NULL ,
+    customerLastName  VARCHAR2 (20) NOT NULL ,
+    licenseNumber     VARCHAR2 (15) NOT NULL ,
+    loanTime          DATE NOT NULL ,
+    returnTime        DATE NOT NULL
+  ) ;
+
+Table TESTDRIVE created.
+
+SQL> ALTER TABLE testDrive ADD CONSTRAINT testDrive_PK PRIMARY KEY ( testDriveID ) ;
+
+Table TESTDRIVE altered.
+
+SQL> CREATE TABLE valuation
+  (
+    valuationID            NUMBER (8) NOT NULL ,
+    employeeID             CHAR (6) NOT NULL ,
+    secondhand_vehicleID   NUMBER (8) NOT NULL ,
+    costForSalability      NUMBER (10) NOT NULL ,
+    registrationExpiryDate DATE NOT NULL ,
+    profitAmount           NUMBER (10) NOT NULL
+  ) ;
+
+Table VALUATION created.
+
+SQL> ALTER TABLE valuation ADD CONSTRAINT valuation_PK PRIMARY KEY ( valuationID ) ;
+
+Table VALUATION altered.
+
+SQL> CREATE TABLE valuation_parts
+  (
+    partsID     NUMBER (8) NOT NULL ,
+    valuationID NUMBER (8) NOT NULL
+  ) ;
+
+Table VALUATION_PARTS created.
+
+SQL> ALTER TABLE valuation_parts ADD CONSTRAINT valuation_parts_PK PRIMARY KEY ( partsID, valuationID ) ;
+
+Table VALUATION_PARTS altered.
+
+SQL> CREATE TABLE vehicle
+  (
+    regNumber              CHAR (6) NOT NULL ,
+    branchID               NUMBER (8) NOT NULL ,
+    VIN                    CHAR (10) NOT NULL ,
+    odometerNumber         VARCHAR2 (6) NOT NULL ,
+    modelID                NUMBER (8) NOT NULL ,
+    purchasePrice          NUMBER (10) NOT NULL ,
+    recommendedPrice       NUMBER (10) NOT NULL ,
+    minimumPrice           NUMBER (10) NOT NULL ,
+    yearOfManufacture      DATE NOT NULL ,
+    numberOfPreviousOwners NUMBER (3) NOT NULL
+  ) ;
+
+Table VEHICLE created.
+
+SQL> ALTER TABLE vehicle ADD CONSTRAINT vehicle_PK PRIMARY KEY ( regNumber ) ;
+
+Table VEHICLE altered.
+
+SQL> ALTER TABLE department ADD CONSTRAINT branch_department FOREIGN KEY ( branchID ) REFERENCES branch ( branchID ) ;
+
+Table DEPARTMENT altered.
+
+SQL> ALTER TABLE employee_certificate ADD CONSTRAINT certificate_employee FOREIGN KEY ( certificateID ) REFERENCES certificate ( certificateID ) ;
+
+Table EMPLOYEE_CERTIFICATE altered.
+
+SQL> ALTER TABLE sales ADD CONSTRAINT customer_sales FOREIGN KEY ( customerNumber ) REFERENCES customer ( customerNumber ) ;
+
+Table SALES altered.
+
+SQL> ALTER TABLE employee_certificate ADD CONSTRAINT employee_certificate FOREIGN KEY ( employeeID ) REFERENCES employee ( employeeID ) ;
+
+Table EMPLOYEE_CERTIFICATE altered.
+
+SQL> ALTER TABLE employee ADD CONSTRAINT employee_department FOREIGN KEY ( departmentID ) REFERENCES department ( departmentID ) ;
+
+Table EMPLOYEE altered.
+
+SQL> ALTER TABLE branch ADD CONSTRAINT employee_manager_branch FOREIGN KEY ( employeeID ) REFERENCES employee ( employeeID ) ;
+
+Table BRANCH altered.
+
+SQL> ALTER TABLE employee ADD CONSTRAINT employee_manager_branchv1 FOREIGN KEY ( branchID ) REFERENCES branch ( branchID ) ;
+
+Table EMPLOYEE altered.
+
+SQL> ALTER TABLE employee_qualification ADD CONSTRAINT employee_qualification FOREIGN KEY ( qualificationID ) REFERENCES qualification ( qualificationID ) ;
+
+Table EMPLOYEE_QUALIFICATION altered.
+
+SQL> ALTER TABLE employee_qualification ADD CONSTRAINT employee_qualificationv1 FOREIGN KEY ( employeeID ) REFERENCES employee ( employeeID ) ;
+
+Table EMPLOYEE_QUALIFICATION altered.
+
+SQL> ALTER TABLE sales ADD CONSTRAINT employee_sales FOREIGN KEY ( employeeID ) REFERENCES employee ( employeeID ) ;
+
+Table SALES altered.
+
+SQL> ALTER TABLE valuation ADD CONSTRAINT "employee_valuation(mechanic)" FOREIGN KEY ( employeeID ) REFERENCES employee ( employeeID ) ;
+
+Table VALUATION altered.
+
+SQL> ALTER TABLE model ADD CONSTRAINT manufacturer_model FOREIGN KEY ( manufacturerID ) REFERENCES manufacturer ( manufacturerID ) ;
+
+Table MODEL altered.
+
+SQL> ALTER TABLE vehicle ADD CONSTRAINT model_vehicle FOREIGN KEY ( modelID ) REFERENCES model ( modelID ) ;
+
+Table VEHICLE altered.
+
+SQL> ALTER TABLE parts ADD CONSTRAINT part_supplier FOREIGN KEY ( supplierID ) REFERENCES supplier ( supplierID ) ;
+
+Table PARTS altered.
+
+SQL> ALTER TABLE valuation_parts ADD CONSTRAINT parts_valuation FOREIGN KEY ( partsID ) REFERENCES parts ( partsID ) ;
+
+Table VALUATION_PARTS altered.
+
+SQL> ALTER TABLE secondhand_vehicle ADD CONSTRAINT prevOwner_2ndhandvehicle FOREIGN KEY ( previousOwnerID ) REFERENCES previousOwner ( previousOwnerID ) ;
+
+Table SECONDHAND_VEHICLE altered.
+
+SQL> ALTER TABLE sales_payment ADD CONSTRAINT sales_payment FOREIGN KEY ( paymentID ) REFERENCES payment ( paymentID ) ;
+
+Table SALES_PAYMENT altered.
+
+SQL> ALTER TABLE payment ADD CONSTRAINT sales_paymentv1 FOREIGN KEY ( salesNumber ) REFERENCES sales_payment ( salesNumber ) ;
+
+Table PAYMENT altered.
+
+SQL> ALTER TABLE sales_payment ADD CONSTRAINT sales_paymentv1v1 FOREIGN KEY ( salesNumber ) REFERENCES sales ( salesNumber ) ;
+
+Table SALES_PAYMENT altered.
+
+SQL> ALTER TABLE sales_vehicle ADD CONSTRAINT sales_vehicle FOREIGN KEY ( regNumber ) REFERENCES vehicle ( regNumber ) ;
+
+Table SALES_VEHICLE altered.
+
+SQL> ALTER TABLE sales_vehicle ADD CONSTRAINT sales_vehiclev1 FOREIGN KEY ( salesNumber ) REFERENCES sales ( salesNumber ) ;
+
+Table SALES_VEHICLE altered.
+
+SQL> ALTER TABLE secondhand_vehicle ADD CONSTRAINT secondhandcarvehicle_model FOREIGN KEY ( modelID ) REFERENCES model ( modelID ) ;
+
+Table SECONDHAND_VEHICLE altered.
+
+SQL> ALTER TABLE supplier_manufacturer ADD CONSTRAINT supplier_manufacturerv1 FOREIGN KEY ( supplierID ) REFERENCES supplier ( supplierID ) ;
+
+Table SUPPLIER_MANUFACTURER altered.
+
+SQL> ALTER TABLE supplier_manufacturer ADD CONSTRAINT supplier_manufacturerv2 FOREIGN KEY ( manufacturerID ) REFERENCES manufacturer ( manufacturerID ) ;
+
+Table SUPPLIER_MANUFACTURER altered.
+
+SQL> ALTER TABLE testDrive ADD CONSTRAINT testDrive_customer FOREIGN KEY ( customerNumber ) REFERENCES customer ( customerNumber ) ;
+
+Table TESTDRIVE altered.
+
+SQL> ALTER TABLE testDrive ADD CONSTRAINT testDrive_vehicle FOREIGN KEY ( regNumber ) REFERENCES vehicle ( regNumber ) ;
+
+Table TESTDRIVE altered.
+
+SQL> ALTER TABLE valuation_parts ADD CONSTRAINT valuation_parts FOREIGN KEY ( valuationID ) REFERENCES valuation ( valuationID ) ;
+
+Table VALUATION_PARTS altered.
+
+SQL> ALTER TABLE valuation ADD CONSTRAINT valuation_secondhandvehicle FOREIGN KEY ( secondhand_vehicleID ) REFERENCES secondhand_vehicle ( secondhand_vehicleID ) ;
+
+Table VALUATION altered.
+
+SQL> ALTER TABLE vehicle ADD CONSTRAINT vehicle_branch FOREIGN KEY ( branchID ) REFERENCES branch ( branchID ) ;
+
+Table VEHICLE altered.
+
+SQL> ALTER TABLE secondhand_vehicle ADD CONSTRAINT vehicle_secondhandvehicle FOREIGN KEY ( regNumber ) REFERENCES vehicle ( regNumber ) ;
+
+Table SECONDHAND_VEHICLE altered.
+
+SQL> -- Oracle SQL Developer Data Modeler Summary Report: 
+SQL> -- 
+SQL> -- CREATE TABLE                            23
+SQL> -- CREATE INDEX                             4
+SQL> -- ALTER TABLE                             53
+SQL> -- CREATE VIEW                              0
+SQL> -- ALTER VIEW                               0
+SQL> -- CREATE PACKAGE                           0
+SQL> -- CREATE PACKAGE BODY                      0
+SQL> -- CREATE PROCEDURE                         0
+SQL> -- CREATE FUNCTION                          0
+SQL> -- CREATE TRIGGER                           0
+SQL> -- ALTER TRIGGER                            0
+SQL> -- CREATE COLLECTION TYPE                   0
+SQL> -- CREATE STRUCTURED TYPE                   0
+SQL> -- CREATE STRUCTURED TYPE BODY              0
+SQL> -- CREATE CLUSTER                           0
+SQL> -- CREATE CONTEXT                           0
+SQL> -- CREATE DATABASE                          0
+SQL> -- CREATE DIMENSION                         0
+SQL> -- CREATE DIRECTORY                         0
+SQL> -- CREATE DISK GROUP                        0
+SQL> -- CREATE ROLE                              0
+SQL> -- CREATE ROLLBACK SEGMENT                  0
+SQL> -- CREATE SEQUENCE                          0
+SQL> -- CREATE MATERIALIZED VIEW                 0
+SQL> -- CREATE SYNONYM                           0
+SQL> -- CREATE TABLESPACE                        0
+SQL> -- CREATE USER                              0
+SQL> -- 
+SQL> -- DROP TABLESPACE                          0
+SQL> -- DROP DATABASE                            0
+SQL> -- 
+SQL> -- REDACTION POLICY                         0
+SQL> -- 
+SQL> -- ORDS DROP SCHEMA                         0
+SQL> -- ORDS ENABLE SCHEMA                       0
+SQL> -- ORDS ENABLE OBJECT                       0
+SQL> -- 
+SQL> -- ERRORS                                   0
+SQL> -- WARNINGS                                 0
